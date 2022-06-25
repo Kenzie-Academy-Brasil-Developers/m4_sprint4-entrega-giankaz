@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: api
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=gianr
+      - DB_PASSWORD=91300962
+      - DB=tests_products
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+
+  db:
+    container_name: db
+    image: postgres:14.3
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=gianr
+      - POSTGRES_PASSWORD=91300962
+      - POSTGRES_DB=tests_products
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gianr -d tests_products"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - ./create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - postgres_demo:/var/lib/postgresql/data
+
+volumes:
+  postgres_demo:
+    driver: local

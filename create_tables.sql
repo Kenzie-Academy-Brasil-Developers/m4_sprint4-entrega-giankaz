@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS categories (
+	id BIGSERIAL UNIQUE PRIMARY KEY,
+  	name VARCHAR(128) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS products (
+	 id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  	 name VARCHAR(128) NOT NULL,
+  	 price NUMERIC(128, 2) NOT NULL,
+  	 category_id INTEGER,
+  	 CONSTRAINT category_id_fk
+  	 FOREIGN KEY (category_id) 
+     REFERENCES categories(id) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
