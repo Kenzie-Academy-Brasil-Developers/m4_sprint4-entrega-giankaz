@@ -17,7 +17,10 @@ export default async function updateCategoryService(id, newCategorie) {
              UPDATE categories  SET name = $1 WHERE id = $2 RETURNING *;
         `, [updatedCategorie.name, id])
 
-        return update.rows[0]
+        return {
+            message: "Category updated",
+            category: update.rows[0]
+        }
 
     } catch (error) {
 

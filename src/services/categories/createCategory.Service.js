@@ -9,11 +9,19 @@ export default async function createCategoryService(name) {
                   VALUES ($1) RETURNING *;
              `, [name])
 
-        return res.rows[0]
+
+        if (!res.rows) {
+            throw new Error
+        }
+             
+        return {
+            message: "Category created",
+            category: res.rows[0]
+        }
 
     } catch (error) {
 
-        return res.status(404).json({ message: error.message })
+        throw new Error(error)
 
     }
 };

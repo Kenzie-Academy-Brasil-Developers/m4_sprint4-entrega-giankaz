@@ -8,7 +8,7 @@ export default async function deleteCategoryController (req, res) {
 
              const deletedUser = await deleteCategoryService(id)
 
-             return res.status(200).json(deletedUser)
+             return res.status(204).json(deletedUser)
  
      } catch (error) {
  

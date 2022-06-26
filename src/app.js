@@ -12,6 +12,8 @@ app.use('/products', productsRouter)
 
 
 
+
+
 export default app.listen(3333, () => {
   console.log('open');
   startDatabase()

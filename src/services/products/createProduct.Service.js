@@ -1,10 +1,10 @@
 import database from "../../database"
 
-export default async function createProductService({ name, price, category }) {
+export default async function createProductService({ name, price, category_id }) {
 
      try {
 
-          const checkCategoryExists = await database.query(`
+ /*          const checkCategoryExists = await database.query(`
           SELECT id FROM categories WHERE name = $1
           `, [category])
 
@@ -16,14 +16,17 @@ export default async function createProductService({ name, price, category }) {
                `, [category])
 
           }
-
+ */
           const res = await database.query(`
           INSERT INTO products (name, price, category_id)
-          VALUES ($1, $2, (SELECT id FROM categories WHERE name = $3))
+          VALUES ($1, $2, (SELECT id FROM categories WHERE id = $3))
           RETURNING *;
-          `, [name, price, category])
+          `, [name, price, category_id])
           
-          return res.rows[0]
+          return {
+               message: "Product created",
+               product: res.rows[0]
+          }
     
      } catch (error) {
 
@@ -31,3 +34,6 @@ export default async function createProductService({ name, price, category }) {
 
      }
 };  
+
+
+//(SELECT id FROM categories WHERE name = $3)
