@@ -14,7 +14,7 @@ app.use('/products', productsRouter)
 
 
 
-export default app.listen(3333, () => {
+export default app.listen(process.env.PORT || 3333, () => {
   console.log('open');
   startDatabase()
 });

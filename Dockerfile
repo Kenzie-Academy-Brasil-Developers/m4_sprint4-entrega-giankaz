@@ -1,4 +1,4 @@
-FROM node:16.15.1
+FROM node:16
 
 ENV PORT=3000
 
@@ -6,10 +6,10 @@ EXPOSE 3000
 
 WORKDIR /app
 
-COPY 'package.json' .
+COPY 'package.json' ./
 
 RUN yarn
 
 COPY . .
 
-CMD ["yarn", "dev"]
+CMD ["yarn", "start"]

@@ -1,43 +1,32 @@
-version: '3.9'
+version: "3.9"
 
 services:
   api:
     container_name: api
+    image: entrega
     build: .
     ports:
       - 3000:3000
     environment:
-      - PORT=3000
       - DB_HOST=db
       - DB_PORT=5432
       - DB_USER=gianr
       - DB_PASSWORD=91300962
-      - DB=tests_products
+      - DB=products_management
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; yarn start'
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     volumes:
       - .:/app
 
   db:
     container_name: db
-    image: postgres:14.3
+    image: postgres:12
     ports:
       - 5432:5432
     environment:
       - POSTGRES_USER=gianr
       - POSTGRES_PASSWORD=91300962
-      - POSTGRES_DB=tests_products
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U gianr -d tests_products"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 5s
+      - POSTGRES_DB=products_management
     volumes:
       - ./create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      - postgres_demo:/var/lib/postgresql/data
-
-volumes:
-  postgres_demo:
-    driver: local
